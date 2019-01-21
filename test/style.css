@@ -54,7 +54,7 @@ body{
 }
 
 #simpleVideoPlayer .barProgress{
-  width: 45px;
+  width: 0%;
   height: 100%;
   background-color: #fff;
   border-radius: 25px;
