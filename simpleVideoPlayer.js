@@ -3,53 +3,55 @@ const videoPlayer = document.getElementById('simpleVideoPlayer'),
       btnPlay = videoPlayer.querySelector('.playControl'),
       barControl = videoPlayer.querySelector('.barControl');
 
-let bucleMediaState = undefined;
 
 btnPlay.addEventListener('click', playState);
 barControl.addEventListener('click', moveProgress);
+// barControl.addEventListener('mousedown', () => { videoPlayerMedia.pause(); });
+// barControl.addEventListener('mouseup', () => { videoPlayerMedia.play(); });
+videoPlayerMedia.addEventListener('timeupdate', mediaState);
+videoPlayerMedia.addEventListener('click', playState);
 
 
-function playState(e){
-  let textContent = e.target.textContent;
-
-  if(textContent === "Play"){
-    e.target.textContent = "Pause";
+function playState(){
+  if(videoPlayerMedia.paused){
+    btnPlay.textContent = "Pause";
     videoPlayerMedia.play();
-    bucleMediaState = setInterval(mediaState, 1000);
-  }else if(textContent === "Pause"){
-    e.target.textContent = "Play";
+  }else{
+    btnPlay.textContent = "Play";
     videoPlayerMedia.pause();
-    clearInterval(bucleMediaState);
   }
 }
 
-function mediaState(){
+function mediaState(e){
   let max = 100,
       progressValue = 0,
       progressIndicator = videoPlayer.querySelector('.barProgress');
 
   if(!videoPlayerMedia.ended){
-    progressValue = parseInt(videoPlayerMedia.currentTime * max / videoPlayerMedia.duration);
+    progressValue = parseInt(e.target.currentTime * max / e.target.duration);
     progressIndicator.style.width = `${progressValue}%`;
   }else{
     progressIndicator.style.width = '0%';
     btnPlay.textContent = 'Play';
-    clearInterval(bucleMediaState);
   }
 }
 
 
 function moveProgress(e){
-  let bar = videoPlayer.querySelector('.barControl'),
+  let bar = videoPlayer.querySelector('.barControl').getBoundingClientRect(),
       progressIndicator = videoPlayer.querySelector('.barProgress'),
-      max = bar.clientWidth;
+      max = bar.width,
+      positionX = e.pageX - bar.left,
+      newCurrentTime = positionX * videoPlayerMedia.duration / max,
+      progressValue = parseInt(newCurrentTime * max / videoPlayerMedia.duration);
 
-  if(!videoPlayerMedia.paused && !videoPlayerMedia.ended){
-    let positionX = e.pageX - bar.offsetLeft,
-        newCurrentTime = positionX * videoPlayerMedia.duration / max,
-        progressValue = parseInt(newCurrentTime * max / videoPlayerMedia.duration);
-console.log(`positionX: ${positionX}, newCurrentTime: ${newCurrentTime}, pageX: ${e.pageX}, barOffset: ${bar.offsetLeft}`);
-    videoPlayerMedia.currentTime = newCurrentTime;
-    progressIndicator.style.width = `${progressValue}%`;
-  }
+  videoPlayerMedia.pause();
+  videoPlayerMedia.currentTime = newCurrentTime;
+  progressIndicator.style.width = `${progressValue}%`;
+  videoPlayerMedia.play();
 }
+
+/*addEventListener('mousemove', e => {
+  let bar = document.querySelector('.barControl').getBoundingClientRect();
+  console.log(`pageX: ${e.pageX}, barOffset: ${bar.left} = ${e.pageX - bar.left}`);
+});*/

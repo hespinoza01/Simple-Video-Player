@@ -51,11 +51,13 @@ body{
   height: 5px;
   background-color: rgba(255,255,255, .35);
   border-radius: 25px;
+  cursor: pointer;
 }
 
 #simpleVideoPlayer .barProgress{
-  width: 0%;
+  width: 0;
   height: 100%;
   background-color: #fff;
   border-radius: 25px;
+  transition: width .05s;
 }
