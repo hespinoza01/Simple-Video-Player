@@ -1,0 +1,44 @@
+*, *::after, *::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-size: 16px;
+  font-family: sans-serif;
+  min-height: 100vh;
+}
+
+
+/*  Simple Video Player Styles  */
+#simpleVideoPlayer{
+  position: relative;
+  width: 720px;
+  height: 400px;
+  margin: 20px auto;
+  border: 1px solid #000;
+  overflow: hidden;
+}
+
+#simpleVideoPlayer .media{
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid tomato;
+}
+
+#simpleVideoPlayer .contentControls{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
+  padding: 5px;
+  background-color: rgba(0,0,0, .25);
+  transform: translateY(100%);
+  transition: transform .5s;
+}
+#simpleVideoPlayer:hover .contentControls{
+  transform: translateY(0);
+}
