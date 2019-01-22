@@ -48,7 +48,7 @@ body{
 
 #simpleVideoPlayer .barControl{
   width: 50%;
-  height: 5px;
+  height: 10px;
   background-color: rgba(255,255,255, .35);
   border-radius: 25px;
   cursor: pointer;
@@ -60,4 +60,30 @@ body{
   background-color: #fff;
   border-radius: 25px;
   transition: width .05s;
+}
+
+#simpleVideoPlayer .timeLabel{
+  font-size: 10px;
+  color: #fff;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #646464;
+  border-radius:4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  text-shadow: 0 1px 1px #000;
+  color: #fff;
+}
+.tooltip:before {
+  content : " ";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #646464;
+  position:absolute;
+  bottom:-5px;
+  left:5px;
 }
