@@ -80,10 +80,10 @@ function mediaState(e){
 
 function timeLabelState() {
   let video = videoPlayerMedia,
-    currentTimeMins = Math.floor(video.currentTime / 60),
-    currentTimeSecs = Math.floor(video.currentTime - currentTimeMins * 60),
-    durationMins = Math.floor(video.duration / 60),
-    durationSecs = Math.floor(video.duration - durationMins * 60);
+    currentTimeMins = parseInt(video.currentTime / 60, 10),
+    currentTimeSecs = parseInt(video.currentTime % 60, 10),
+    durationMins = parseInt(video.duration / 60, 10),
+    durationSecs = parseInt(video.duration % 60, 10);
 
   if(currentTimeMins < 10) currentTimeMins = '0'+currentTimeMins;
   if(currentTimeSecs < 10) currentTimeSecs = '0'+currentTimeSecs;
