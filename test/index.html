@@ -16,14 +16,17 @@
 
     <nav class="contentControls">
       <div class="buttonsControl">
-        <button class="playControl">Play</button>
-        <button class="muteControl">Mute</button>
-        <button class="fullscreenControl">FullScreen</button>
+        <button class="playControl btn"></button>
+        <div class="volumeContent">
+          <button class="muteControl btn"></button>
+          <input type="range" class="volumeControl" id="volumeControl" min="0" max="1" value="1" step="0.01">
+        </div>
       </div>
       <div class="barControl">
         <div class="barProgress"></div>
       </div>
       <span class="timeLabel">00:00 / 00:00</span>
+      <button class="fullscreenControl">FullScreen</button>
     </nav>
   </section>
 
