@@ -5,7 +5,8 @@ const videoPlayer = document.getElementById('simpleVideoPlayer'),
       btnMute = videoPlayer.querySelector('.muteControl'),
       btnFullscreen = videoPlayer.querySelector('.fullscreenControl'),
       timeLabel = videoPlayer.querySelector('.timeLabel'),
-      volumeControl = videoPlayer.querySelector('#volumeControl');
+      volumeControl = videoPlayer.querySelector('#volumeControl'),
+      tagsContainer = document.querySelector('#tagsContainer');
 
 const icons = {
   play: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 6v12l10-6z'/></svg>",
@@ -17,6 +18,21 @@ const icons = {
 };
 
 let activeFullScreen = false;
+
+let tagSource = [
+  {
+    time: 30,
+    title: "Treinta segundos después"
+  },
+  {
+    time: 60,
+    title: "Un minuto después"
+  },
+  {
+    time: 90,
+    title: "Un minuto y treinta segundos después"
+  }
+];
 
 
 btnPlay.addEventListener('click', playState);
@@ -36,6 +52,36 @@ volumeControl.addEventListener('input', volumeState);
   btnPlay.innerHTML = icons.play;
   btnMute.innerHTML = icons.unmute;
   btnFullscreen.innerHTML = icons.fullscreen;
+
+  (function renderTags(){
+    let fragment = document.createDocumentFragment();
+
+    for(let item of tagSource) {
+      let value = item.time,
+          title = item.title;
+          // minutes = parseInt(value / 60, 10),
+          // seconds = parseInt(value % 60, 10);
+
+      // if(minutes < 10) minutes = '0'+minutes;
+      // if(seconds < 10) seconds = '0'+seconds;
+
+      let skeletonTag = document.createElement('li');
+
+      skeletonTag.className = "tagItem";
+      skeletonTag.setAttribute('value', value);
+      skeletonTag.style.cursor = 'pointer';
+
+      skeletonTag.innerHTML = `<span>${title}</span>`;
+
+      skeletonTag.addEventListener('click', () => {
+        videoPlayerMedia.currentTime = skeletonTag.getAttribute('value');
+      });
+
+      fragment.appendChild(skeletonTag);
+    }
+
+    tagsContainer.appendChild(fragment);
+  })();
 })();
 
 
