@@ -12,21 +12,43 @@ body{
 
 
 /*  Simple Video Player Styles  */
+.wrapper{
+  display: flex;
+  width: 1025px;
+  height: 400px;
+  margin: 20px auto;
+}
 #simpleVideoPlayer{
   position: relative;
   width: 720px;
-  height: 400px;
-  margin: 20px auto;
-  border: 1px solid #000;
+  height: 100%;
   overflow: hidden;
 }
 
 #simpleVideoPlayer .media{
-  position: relative;
   display: block;
   width: 100%;
   height: 100%;
-  border: 1px solid tomato;
+}
+
+.tagsContainer{
+  width: 305px;
+  height: 100%;
+  overflow: auto;
+  background-color: #393939;
+}
+.tagsContainer li{
+  list-style: none;
+  padding: .45rem .75rem;
+  font-size: 12px;
+  background-color: #393939;
+  color: #fff;
+}
+.tagsContainer li:nth-child(odd){
+  background-color: #494949;
+}
+.tagsContainer li:hover{
+  box-shadow: inset 5px 0 tomato;
 }
 
 #simpleVideoPlayer .contentControls{
