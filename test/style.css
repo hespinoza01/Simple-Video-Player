@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border: none;
+  border-radius: 0;
 }
 
 body{
@@ -31,24 +33,44 @@ body{
   height: 100%;
 }
 
-.tagsContainer{
+.playlistTags{
   width: 305px;
   height: 100%;
   overflow: auto;
   background-color: #393939;
 }
-.tagsContainer li{
+.playlistTagsNavigation{
+  display: flex;
+}
+
+.btnTab{
+  width: 50%;
+  padding: .5rem;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color .25s;
+}
+.btnTab.active{
+  background-color: tomato;
+  color: #393939;
+}
+.tabContainer.active{
+  display: none;
+}
+.tabContainer li{
   list-style: none;
   padding: .45rem .75rem;
   font-size: 12px;
   background-color: #393939;
   color: #fff;
 }
-.tagsContainer li:nth-child(odd){
+.tabContainer li:nth-child(odd){
   background-color: #494949;
 }
-.tagsContainer li:hover{
-  box-shadow: inset 5px 0 tomato;
+.tabContainer li:hover{
+  box-shadow: inset -5px 0 tomato;
 }
 
 #simpleVideoPlayer .contentControls{

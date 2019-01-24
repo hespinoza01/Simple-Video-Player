@@ -30,7 +30,14 @@
         <button class="fullscreenControl btn"></button>
       </nav>
     </section>
-    <ul id="tagsContainer" class="tagsContainer"></ul>
+    <aside class="playlistTags">
+      <nav class="playlistTagsNavigation">
+        <button id="playlistTab" class="btnTab active" container="playlistContainer">Videos</button>
+        <button id="tagsTab" class="btnTab" container="tagsContainer">Etiquetas</button>
+      </nav>
+      <ul id="playlistContainer" class="tabContainer"></ul>
+      <ul id="tagsContainer" class="tabContainer" style="display: none;"></ul>
+    </aside>
   </section>
 
   <script src="../simpleVideoPlayer.js"></script>

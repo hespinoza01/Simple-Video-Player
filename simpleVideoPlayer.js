@@ -7,7 +7,10 @@ const videoPlayer = document.getElementById('simpleVideoPlayer'),
       timeLabel = videoPlayer.querySelector('.timeLabel'),
       volumeControl = videoPlayer.querySelector('#volumeControl'),
       tagsContainer = document.querySelector('#tagsContainer'),
-      contentControls = document.querySelector('.contentControls');
+      playlistContainer = document.querySelector('#playlistContainer'),
+      contentControls = document.querySelector('.contentControls'),
+      playlistTab = document.querySelector('#playlistTab'),
+      tagsTab = document.querySelector('#tagsTab');
 
 const icons = {
   play: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 6v12l10-6z'/></svg>",
@@ -36,6 +39,29 @@ let tagSource = [
   }
 ];
 
+let playlistSource = [
+  {
+    time: 30,
+    title: "Video 1"
+  },
+  {
+    time: 60,
+    title: "Video 2"
+  },
+  {
+    time: 90,
+    title: "Video 3"
+  },
+  {
+    time: 90,
+    title: "Video 4"
+  },
+  {
+    time: 90,
+    title: "Video 5"
+  }
+];
+
 
 btnPlay.addEventListener('click', playState);
 btnMute.addEventListener('click', muteState);
@@ -50,6 +76,8 @@ videoPlayerMedia.addEventListener('play', playTrigger);
 videoPlayerMedia.addEventListener('mousestop', hideCursor);
 videoPlayerMedia.addEventListener('mousemove', showCursor);
 volumeControl.addEventListener('input', volumeState);
+playlistTab.addEventListener('click', activeTabState);
+tagsTab.addEventListener('click', activeTabState);
 
 
 (function(){
@@ -57,17 +85,13 @@ volumeControl.addEventListener('input', volumeState);
   btnMute.innerHTML = icons.unmute;
   btnFullscreen.innerHTML = icons.fullscreen;
 
-  (function renderTags(){
+  // Render tag list of video
+  (function renderTags(data){
     let fragment = document.createDocumentFragment();
 
-    for(let item of tagSource) {
+    for(let item of data) {
       let value = item.time,
           title = item.title;
-          // minutes = parseInt(value / 60, 10),
-          // seconds = parseInt(value % 60, 10);
-
-      // if(minutes < 10) minutes = '0'+minutes;
-      // if(seconds < 10) seconds = '0'+seconds;
 
       let skeletonTag = document.createElement('li');
 
@@ -85,7 +109,33 @@ volumeControl.addEventListener('input', volumeState);
     }
 
     tagsContainer.appendChild(fragment);
-  })();
+  })(tagSource);
+
+  // Render playlist
+  (function renderTags(data){
+    let fragment = document.createDocumentFragment();
+
+    for(let item of data) {
+      let value = item.time,
+        title = item.title;
+
+      let skeletonTag = document.createElement('li');
+
+      skeletonTag.className = "tagItem";
+      skeletonTag.setAttribute('value', value);
+      skeletonTag.style.cursor = 'pointer';
+
+      skeletonTag.innerHTML = `<span>${title}</span>`;
+
+      /*skeletonTag.addEventListener('click', () => {
+        videoPlayerMedia.currentTime = skeletonTag.getAttribute('value');
+      });*/
+
+      fragment.appendChild(skeletonTag);
+    }
+
+    playlistContainer.appendChild(fragment);
+  })(playlistSource);
 
   // Habilitar nuevo evento personalizado para detectar cuando el mouse este sobre el video sin moverse
   (function(delay){
@@ -256,4 +306,14 @@ function showCursor(){
   clearInterval(timeoutCursorFullscreen);
   videoPlayerMedia.style.cursor = '';
   contentControls.style.transform = '';
+}
+
+function activeTabState(e){
+  let older = document.querySelector('.btnTab.active');
+
+  older.classList.remove('active');
+  e.target.classList.add('active');
+
+  document.querySelector(`#${older.getAttribute('container')}`).style.display = 'none';
+  document.querySelector(`#${e.target.getAttribute('container')}`).style.display = '';
 }
