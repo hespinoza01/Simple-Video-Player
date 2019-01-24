@@ -6,7 +6,8 @@ const videoPlayer = document.getElementById('simpleVideoPlayer'),
       btnFullscreen = videoPlayer.querySelector('.fullscreenControl'),
       timeLabel = videoPlayer.querySelector('.timeLabel'),
       volumeControl = videoPlayer.querySelector('#volumeControl'),
-      tagsContainer = document.querySelector('#tagsContainer');
+      tagsContainer = document.querySelector('#tagsContainer'),
+      contentControls = document.querySelector('.contentControls');
 
 const icons = {
   play: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 6v12l10-6z'/></svg>",
@@ -45,6 +46,8 @@ barControl.addEventListener('mouseout', hideTooltip);
 videoPlayerMedia.addEventListener('timeupdate', mediaState);
 videoPlayerMedia.addEventListener('click', playState);
 videoPlayerMedia.addEventListener('play', playTrigger);
+videoPlayerMedia.addEventListener('mousestop', hideCursor);
+videoPlayerMedia.addEventListener('mousemove', showCursor);
 volumeControl.addEventListener('input', volumeState);
 
 
@@ -82,6 +85,28 @@ volumeControl.addEventListener('input', volumeState);
 
     tagsContainer.appendChild(fragment);
   })();
+
+  // Habilitar nuevo evento personalizado para detectar cuando el mouse este sobre el video sin moverse
+  (function(delay){
+    let timeout = undefined;
+
+    document.addEventListener('mousemove', function(e){
+      clearInterval(timeout);
+
+      timeout = setTimeout(function(){
+        let event = new CustomEvent('mousestop', {
+          detail: {
+            clientX: e.clientX,
+            clientY: e.clientY
+          },
+          bubbles: true,
+          cancelable: true
+        });
+
+        e.target.dispatchEvent(event);
+      }, delay)
+    });
+  })(2500);
 })();
 
 
@@ -151,7 +176,7 @@ function moveProgress(e){
   videoPlayerMedia.pause();
   videoPlayerMedia.currentTime = newCurrentTime;
   progressIndicator.style.width = `${progressValue}%`;
-  if(!videoPlayerMedia.ended) videoPlayerMedia.play();
+  videoPlayerMedia.play();
 }
 
 function muteState(){
@@ -187,7 +212,7 @@ function showTooltip(e) {
   tooltip.textContent = getTimeTooltip(e);
   document.body.appendChild(tooltip);
 
-  tooltip.setAttribute('style', `top: ${bar.y - tooltip.offsetHeight - bar.height}px; left: ${e.pageX - 10}px;`);
+  tooltip.setAttribute('style', `top: ${e.pageY - tooltip.offsetHeight - bar.height}px; left: ${e.pageX - 10}px;`);
 }
 
 function updateTooltip(e){
@@ -195,7 +220,7 @@ function updateTooltip(e){
       bar = e.target.getBoundingClientRect();
 
   tooltip.textContent = getTimeTooltip(e);
-  tooltip.setAttribute('style', `top: ${bar.y - tooltip.offsetHeight - bar.height}px; left: ${e.pageX - 10}px;`);
+  tooltip.setAttribute('style', `top: ${e.pageY - tooltip.offsetHeight - bar.height}px; left: ${e.pageX - 10}px;`);
 }
 
 function hideTooltip() {
@@ -218,4 +243,14 @@ function getTimeTooltip(e){
 
 function volumeState(e){
   videoPlayerMedia.volume = e.target.value;
+}
+
+function hideCursor(e){
+  e.target.style.cursor = 'none';
+  contentControls.style.transform = 'translate3d(0, 100%, 0)';
+}
+
+function showCursor(e){
+  e.target.style.cursor = '';
+  contentControls.style.transform = '';
 }
