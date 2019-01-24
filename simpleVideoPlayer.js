@@ -18,7 +18,8 @@ const icons = {
   exitfullscreen: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 9V3H8v5H3v2h6a1 1 0 0 0 1-1zM8 21h2v-6a1 1 0 0 0-1-1H3v2h5v5zM21 14h-6a1 1 0 0 0-1 1v6h2v-5h5v-2zM21 8h-5V3h-2v6a1 1 0 0 0 1 1h6V8z'/></svg>"
 };
 
-let activeFullScreen = false;
+let activeFullScreen = false,
+    timeoutCursorFullscreen = undefined;
 
 let tagSource = [
   {
@@ -196,6 +197,7 @@ function fullscreenState() {
     videoPlayer.requestFullscreen();
     activeFullScreen = true;
     btnFullscreen.innerHTML = icons.exitfullscreen;
+    timeoutCursorFullscreen = setInterval(hideCursor, 2500);
   }else{
     document.exitFullscreen();
     activeFullScreen = false;
@@ -245,12 +247,13 @@ function volumeState(e){
   videoPlayerMedia.volume = e.target.value;
 }
 
-function hideCursor(e){
-  e.target.style.cursor = 'none';
+function hideCursor(){
+  videoPlayerMedia.style.cursor = 'none';
   contentControls.style.transform = 'translate3d(0, 100%, 0)';
 }
 
-function showCursor(e){
-  e.target.style.cursor = '';
+function showCursor(){
+  clearInterval(timeoutCursorFullscreen);
+  videoPlayerMedia.style.cursor = '';
   contentControls.style.transform = '';
 }
